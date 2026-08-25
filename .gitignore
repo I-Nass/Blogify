@@ -1,0 +1,15 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Logs & OS junk
+*.log
+.DS_Store
+Thumbs.db
+
+# Legacy / backups
+_legacy/

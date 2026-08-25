@@ -1,0 +1,16 @@
+<% if (pager.totalPages > 1) { %>
+<nav class="pagination" aria-label="Pagination">
+    <% if (pager.prevUrl) { %><a class="pageBtn" href="<%= pager.prevUrl %>">← Prev</a><% } %>
+    <% pager.items.forEach(it => { %>
+        <% if (it.dots) { %>
+            <span class="pageDots">…</span>
+        <% } else if (it.current) { %>
+            <span class="pageBtn current" aria-current="page"><%= it.n %></span>
+        <% } else { %>
+            <a class="pageBtn" href="<%= it.url %>"><%= it.n %></a>
+        <% } %>
+    <% }) %>
+    <% if (pager.nextUrl) { %><a class="pageBtn" href="<%= pager.nextUrl %>">Next →</a><% } %>
+    <span class="pageInfo"><%= pager.totalItems %> post<%= pager.totalItems === 1 ? '' : 's' %></span>
+</nav>
+<% } %>

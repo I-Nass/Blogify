@@ -1,0 +1,58 @@
+<%- include('../partials/head', { title, bodyClass: 'adminBody' }) %>
+
+<div class="adminLayout">
+    <%- include('../partials/side-nav') %>
+
+    <main class="adminMain">
+        <% if (msg) { %><div class="alert ok"><%= msg %></div><% } %>
+
+        <h1>Dashboard</h1>
+
+        <div class="statRow">
+            <div class="statCard"><span class="num"><%= stats.total %></span><span>Total posts</span></div>
+            <div class="statCard"><span class="num"><%= stats.published %></span><span>Published</span></div>
+            <div class="statCard"><span class="num"><%= stats.drafts %></span><span>Drafts</span></div>
+        </div>
+
+        <div class="panelHead">
+            <h2>All posts</h2>
+            <a class="btn btnPrimary sm" href="/admin/new">+ New post</a>
+        </div>
+
+        <% if (posts.length) { %>
+            <div class="tableWrap">
+                <table class="postsTable">
+                    <thead>
+                        <tr><th>Title</th><th>Status</th><th>Category</th><th>Tags</th><th>Author</th><th>Date</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <% posts.forEach(p => { %>
+                            <tr>
+                                <td class="tTitle">
+                                    <a href="/read/<%= p.slug || p._id %>" target="_blank" rel="noopener"><%= p.title %></a>
+                                </td>
+                                <td><span class="badge <%= p.status === 'draft' ? 'draftB' : 'pubB' %>"><%= p.status %></span></td>
+                                <td><%= p.category || '—' %></td>
+                                <td class="tTags"><%= (p.tags && p.tags.length) ? p.tags.join(', ') : '—' %></td>
+                                <td><%= p.author %></td>
+                                <td><%= fmt.fmtDate(p.createdAt) %></td>
+                                <td class="tActions">
+                                    <a class="btn btnGhost xs" href="/admin/edit/<%= p._id %>">Edit</a>
+                                    <form action="/admin/delete/<%= p._id %>" method="post"
+                                          onsubmit="return confirm('Delete this post permanently? This cannot be undone.')">
+                                        <button class="btn btnDanger xs" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="emptyState">
+                <p>No posts yet — your blog is waiting for its first story.</p>
+                <a class="btn btnPrimary" href="/admin/new">Create your first post</a>
+            </div>
+        <% } %>
+    </main>
+</div>

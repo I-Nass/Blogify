@@ -1,0 +1,73 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main class="shell pageBody">
+    <article class="readWrap">
+        <% if (post.status === 'draft') { %>
+            <div class="draftBadge">Draft preview — visible only while logged in</div>
+        <% } %>
+
+        <header class="readHead">
+            <% if (post.category) { %>
+                <a class="catChip" href="/category/<%= encodeURIComponent(post.category) %>">
+                    <%= post.category.charAt(0).toUpperCase() + post.category.slice(1) %>
+                </a>
+            <% } %>
+            <h1 class="readTitle"><%= post.title %></h1>
+            <div class="detWrap">
+                <a class="author" href="/author/<%= encodeURIComponent(post.author) %>">
+                    <span class="avatar"><%= post.author.charAt(0).toUpperCase() %></span>
+                    <b><%= post.author %></b>
+                </a>
+                <span class="dot">·</span>
+                <span><%= fmt.fmtDate(post.createdAt) %></span>
+                <span class="dot">·</span>
+                <span>⏱ <%= post.readTime %></span>
+                <% if (currentUser) { %>
+                    <a class="btn btnGhost sm editLink" href="/admin/edit/<%= post._id %>">✎ Edit</a>
+                <% } %>
+            </div>
+        </header>
+
+        <figure class="viewImgCont">
+            <img src="<%= post.imgUrl || '/img/Image_not_available.png' %>" alt="<%= post.title %>"
+                 onerror="this.onerror=null;this.src='/img/Image_not_available.png'">
+        </figure>
+
+        <div class="articleCont">
+            <div class="article1">
+                <% fmt.paragraphs(post.article1).forEach(p => { %><p><%= p %></p><% }); %>
+            </div>
+            <% if (post.imgUrl2) { %>
+                <figure class="midArticleImgCont">
+                    <img src="<%= post.imgUrl2 %>" alt="" loading="lazy"
+                         onerror="this.style.display='none'">
+                </figure>
+            <% } %>
+            <div class="article2">
+                <% fmt.paragraphs(post.article2).forEach(p => { %><p><%= p %></p><% }); %>
+            </div>
+        </div>
+
+        <% if (post.tags && post.tags.length) { %>
+            <div class="tagRow big">
+                <% post.tags.forEach(t => { %>
+                    <a class="tagChip" href="/tag/<%= encodeURIComponent(t) %>">#<%= t %></a>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <div class="authorBox">
+            <span class="avatar lg"><%= post.author.charAt(0).toUpperCase() %></span>
+            <div>
+                <b>Written by <%= post.author %></b>
+                <p>Enjoyed this story? See what else they've published.</p>
+                <a class="btn btnGhost sm" href="/author/<%= encodeURIComponent(post.author) %>">More from <%= post.author.split(' ')[0] %> →</a>
+            </div>
+        </div>
+
+        <a class="backLink" href="/">← Back to all stories</a>
+    </article>
+</main>
+
+<%- include('partials/footer') %>

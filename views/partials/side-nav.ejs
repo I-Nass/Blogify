@@ -1,0 +1,13 @@
+<aside class="sideNav">
+    <a class="brand light" href="/admin">Blogify <span class="cmsTag">CMS</span></a>
+    <nav>
+        <a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>">▤ Dashboard</a>
+        <a href="/admin/new" class="<%= currentPath.startsWith('/admin/new') || currentPath.startsWith('/admin/edit') ? 'active' : '' %>">✎ New post</a>
+        <a href="/" target="_blank" rel="noopener">⌂ View site ↗</a>
+    </nav>
+    <% if (currentUser) { %>
+        <form action="/admin/logout" method="post" class="sideLogout">
+            <button class="btn btnGhostLight block" type="submit">Log out (<%= currentUser.username %>)</button>
+        </form>
+    <% } %>
+</aside>

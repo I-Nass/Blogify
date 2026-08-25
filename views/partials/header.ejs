@@ -1,0 +1,30 @@
+<header class="siteHeader">
+    <div class="shell headerRow">
+        <a class="brand" href="/">Blogify<span class="brandDot">.</span></a>
+
+        <nav class="mainNav">
+            <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a>
+            <a href="/tags" class="<%= currentPath.startsWith('/tag') ? 'active' : '' %>">Tags</a>
+            <a href="/category/general" class="<%= currentPath === '/category/general' ? 'active' : '' %>">General</a>
+            <a href="/category/entertainment" class="<%= currentPath === '/category/entertainment' ? 'active' : '' %>">Entertainment</a>
+            <a href="/category/animation" class="<%= currentPath === '/category/animation' ? 'active' : '' %>">Animation</a>
+        </nav>
+
+        <form class="searchForm" action="/search" method="get" role="search">
+            <input type="search" name="q" placeholder="Search stories…" aria-label="Search"
+                   value="<%= typeof q !== 'undefined' ? q : '' %>">
+            <button type="submit" aria-label="Submit search">⌕</button>
+        </form>
+
+        <div class="headerAuth">
+            <% if (currentUser) { %>
+                <a class="btn btnGhost sm" href="/admin">Dashboard</a>
+                <form action="/admin/logout" method="post">
+                    <button class="btn btnGhost sm" type="submit">Log out</button>
+                </form>
+            <% } else { %>
+                <a class="btn btnPrimary sm" href="/admin/login">Admin</a>
+            <% } %>
+        </div>
+    </div>
+</header>

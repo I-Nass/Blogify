@@ -1,0 +1,32 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main class="shell pageBody">
+    <% if (hero) { %>
+        <section class="hero">
+            <h1>Stories worth reading<span class="accent">.</span></h1>
+            <p>Reviews, explainers and human-interest pieces — published fresh from the Blogify CMS.</p>
+        </section>
+    <% } else if (heading) { %>
+        <div class="pageHead">
+            <h1><%= heading %></h1>
+            <a class="backLink" href="/">← All stories</a>
+        </div>
+    <% } %>
+
+    <% if (posts.length) { %>
+        <section class="postGrid">
+            <% posts.forEach((p, i) => { %>
+                <%- include('partials/post-card', { post: p, featured: hero && i === 0 }) %>
+            <% }) %>
+        </section>
+        <%- include('partials/pagination', { pager }) %>
+    <% } else { %>
+        <div class="emptyState">
+            <p><%= emptyMessage %></p>
+            <a class="btn btnPrimary" href="/">Back home</a>
+        </div>
+    <% } %>
+</main>
+
+<%- include('partials/footer') %>

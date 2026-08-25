@@ -1,0 +1,33 @@
+<article class="itemCont <%= typeof featured !== 'undefined' && featured ? 'featured' : '' %>">
+    <a class="ImgCont" href="/read/<%= post.slug || post._id %>">
+        <img class="bImg" src="<%= post.imgUrl || '/img/Image_not_available.png' %>" alt="<%= post.title %>"
+             loading="lazy" onerror="this.onerror=null;this.src='/img/Image_not_available.png'">
+    </a>
+    <div class="tCont">
+        <% if (post.category) { %>
+            <a class="catChip" href="/category/<%= encodeURIComponent(post.category) %>"><%= post.category %></a>
+        <% } %>
+        <h4 class="pTitle"><a href="/read/<%= post.slug || post._id %>"><%= post.title %></a></h4>
+        <p class="sumTxt"><%= post.summary %></p>
+
+        <div class="minorDet">
+            <a class="author" href="/author/<%= encodeURIComponent(post.author) %>">
+                <span class="avatar"><%= post.author.charAt(0).toUpperCase() %></span>
+                <span class="authorText"><%= post.author %></span>
+            </a>
+            <span class="dot">·</span>
+            <span class="readTime">⏱ <%= post.readTime %></span>
+            <span class="dot">·</span>
+            <span class="postDate"><%= fmt.fmtDate(post.createdAt) %></span>
+            <% if (post.status === 'draft') { %><span class="badge draftB">draft</span><% } %>
+        </div>
+
+        <% if (post.tags && post.tags.length) { %>
+            <div class="tagRow">
+                <% post.tags.forEach(t => { %>
+                    <a class="tagChip" href="/tag/<%= encodeURIComponent(t) %>">#<%= t %></a>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</article>

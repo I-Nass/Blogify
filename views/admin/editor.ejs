@@ -1,0 +1,110 @@
+<%- include('../partials/head', { title, bodyClass: 'adminBody' }) %>
+
+<div class="adminLayout">
+    <%- include('../partials/side-nav') %>
+
+    <main class="adminMain">
+        <div class="panelHead">
+            <h1><%= isEdit ? 'Edit post' : 'New post' %></h1>
+            <a class="btn btnGhost sm" href="/admin">← Back to dashboard</a>
+        </div>
+
+        <% if (error) { %><div class="alert error"><%= error %></div><% } %>
+
+        <form class="editorForm" method="post"
+              action="<%= isEdit ? '/admin/edit/' + post._id : '/admin/new' %>">
+
+            <div class="field">
+                <label for="title">Title *</label>
+                <input type="text" id="title" name="title" maxlength="200" required
+                       placeholder="An attention-grabbing headline"
+                       value="<%= (post && post.title) || '' %>">
+                <small class="hint">URL slug: <code id="slugPreview"><%= (post && post.slug) || '' %></code></small>
+            </div>
+
+            <div class="field">
+                <label for="summary">Summary * <span id="sumCount" class="counter"></span></label>
+                <textarea id="summary" name="summary" rows="3" maxlength="500" required
+                          placeholder="One or two sentences shown on cards and link previews"><%= (post && post.summary) || '' %></textarea>
+            </div>
+
+            <div class="grid2">
+                <div class="field">
+                    <label for="author">Author *</label>
+                    <input type="text" id="author" name="author" required
+                           value="<%= (post && post.author) || (currentUser ? currentUser.username : '') %>">
+                </div>
+                <div class="field">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" list="catList"
+                           value="<%= (post && post.category) || 'general' %>">
+                    <datalist id="catList">
+                        <option>general</option><option>entertainment</option><option>animation</option>
+                        <option>technology</option><option>lifestyle</option><option>community</option>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="tags">Tags <small>(comma separated)</small></label>
+                <input type="text" id="tags" name="tags"
+                       value="<%= (post && post.tags && post.tags.length) ? post.tags.join(', ') : '' %>"
+                       placeholder="movies, review, netflix">
+                <small class="hint">Readers can browse tags at <code>/tags</code> and each tag gets its own page.</small>
+            </div>
+
+            <div class="grid2">
+                <div class="field">
+                    <label for="imgUrl">Cover image URL</label>
+                    <input type="text" id="imgUrl" name="imgUrl"
+                           value="<%= (post && post.imgUrl) || '' %>"
+                           placeholder="/img/my-image.jpg or https://…">
+                    <img id="prevMain" class="imgPreview" alt="Cover preview"
+                         src="<%= (post && post.imgUrl) || '/img/Image_not_available.png' %>">
+                </div>
+                <div class="field">
+                    <label for="imgUrl2">Mid-article image URL <small>(optional)</small></label>
+                    <input type="text" id="imgUrl2" name="imgUrl2"
+                           value="<%= (post && post.imgUrl2) || '' %>"
+                           placeholder="Shown between part one and two">
+                    <img id="prevMid" class="imgPreview" alt=""
+                         src="<%= (post && post.imgUrl2) || '/img/Image_not_available.png' %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="article1">Article — part one</label>
+                <textarea id="article1" name="article1" rows="10"
+                          placeholder="Write your story here… a blank line starts a new paragraph"><%= (post && post.article1) || '' %></textarea>
+            </div>
+
+            <div class="field">
+                <label for="article2">Article — part two <small>(optional, appears after the mid-article image)</small></label>
+                <textarea id="article2" name="article2" rows="8"
+                          placeholder=""><%= (post && post.article2) || '' %></textarea>
+            </div>
+
+            <div class="field rowField">
+                <label>Status</label>
+                <div class="radioRow">
+                    <label class="radio">
+                        <input type="radio" name="status" value="published" <%= !post || post.status !== 'draft' ? 'checked' : '' %>>
+                        Published
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="status" value="draft" <%= post && post.status === 'draft' ? 'checked' : '' %>>
+                        Draft
+                    </label>
+                </div>
+                <small class="hint">Drafts are hidden from readers but you can preview them while logged in.</small>
+            </div>
+
+            <div class="formActions">
+                <button class="btn btnPrimary" type="submit"><%= isEdit ? 'Save changes' : 'Publish post' %></button>
+                <a class="btn btnGhost" href="/admin">Cancel</a>
+            </div>
+        </form>
+    </main>
+</div>
+
+<script src="/js/admin-editor.js"></script>
