@@ -22,15 +22,31 @@ async function seedAdminIfEmpty() {
     }
 }
 
-/** Inserts sampleArticles.js into the blog collection (skips existing titles). */
+/** Inserts or updates sampleArticles.js into the blog collection. */
 async function seedSampleArticles() {
     let added = 0;
+    let updated = 0;
     for (const a of sampleArticles) {
-        if (await Blog.exists({ title: a.title })) continue;
-        await Blog.create({ ...a, category: 'general', status: 'published' });
+        const existing = await Blog.findOne({ title: a.title });
+        if (existing) {
+            existing.summary = a.summary;
+            existing.imgUrl = a.imgUrl;
+            existing.imgUrl2 = a.imgUrl2;
+            existing.article1 = a.article1;
+            existing.article2 = a.article2;
+            existing.author = a.author;
+            existing.category = a.category || 'general';
+            existing.tags = a.tags || [];
+            existing.status = a.status || 'published';
+            existing.readTime = ''; // Auto-recomputed by pre-validate hook
+            await existing.save();
+            updated++;
+            continue;
+        }
+        await Blog.create({ category: 'general', status: 'published', ...a });
         added++;
     }
-    console.log(`[seed] inserted ${added} sample article(s).`);
+    console.log(`[seed] inserted ${added} new article(s), updated ${updated} existing article(s).`);
 }
 
 // CLI usage: npm run seed

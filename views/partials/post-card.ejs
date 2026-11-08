@@ -8,7 +8,7 @@
             <a class="catChip" href="/category/<%= encodeURIComponent(post.category) %>"><%= post.category %></a>
         <% } %>
         <h4 class="pTitle"><a href="/read/<%= post.slug || post._id %>"><%= post.title %></a></h4>
-        <p class="sumTxt"><%= post.summary %></p>
+        <p class="sumTxt"><span class="sumSpan"><%= fmt.excerpt(post.summary, typeof featured !== 'undefined' && featured ? 240 : 150) %></span></p>
 
         <div class="minorDet">
             <a class="author" href="/author/<%= encodeURIComponent(post.author) %>">
