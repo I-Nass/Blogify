@@ -1,6 +1,3 @@
-// One-off utility: imports a legacy mongoexport JSON dump (array of docs)
-// into the current Blog model. Slugs/status/read-time are computed by the
-// schema hooks on insert. Existing titles are skipped, so it is re-runnable.
 //
 //   node scripts/import-legacy.js [path-to-json]
 //

@@ -1,5 +1,0 @@
-Proper adding feature for description (span) and limit code
-truncate for the homepage 
-log in feature
-alt path for accounts,author,tags '/my-account' , '/blog/author' ,'/category/' , '/category/tags'
-Home page to show only 6 articles, page 2 another 6. Use of for loop and slice to limit the articles being show (data.slice(x,y).forEa...., where x and y are the variables for the 2 for loops
