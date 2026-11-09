@@ -6,6 +6,8 @@
 # Dependencies
 node_modules/
 
+.vscode
+
 # Logs & OS junk
 *.log
 .DS_Store
